@@ -19,4 +19,4 @@ jobs:
       - name: Install 
         run: pip3 install .
       - name: Install dependencies
-        run: python run arbitrage-bot.py
+        run: python run arbitrage-bot/bot.py
