@@ -11,7 +11,7 @@ from collections import namedtuple
 import random
 
 
-RUN_ONCE = os.environ.get('RUN_ONCE',default=False)
+RUN_ONCE = os.environ.get('RUN_ONCE',default=True)
 SLEEP_TIME = os.environ.get('SLEEP_TIME',default=360)
 
 def shuffled(x):
