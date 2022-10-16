@@ -33,8 +33,9 @@ class ManifoldClient:
     ) -> Iterable[LiteMarket]:
         """Iterate over all markets."""
         response = requests.get(
-            url=BASE_URI + "/markets", params={"limit": limit, "before": before}
+            url=f"{BASE_URI}/markets", params={"limit": limit, "before": before}
         )
+
         return (LiteMarket.from_dict(market) for market in response.json())
 
     def list_groups(self, availableToUserId: Optional[str] = None) -> List[Group]:
@@ -44,16 +45,18 @@ class ManifoldClient:
     def get_groups(self, availableToUserId: Optional[str] = None) -> Iterable[Group]:
         """Iterate over all markets."""
         response = requests.get(
-            url=BASE_URI + "/groups", params={"availableToUserId": availableToUserId}
+            url=f"{BASE_URI}/groups",
+            params={"availableToUserId": availableToUserId},
         )
+
         return (Group.from_dict(group) for group in response.json())
 
     def get_group(self, slug: Optional[str] = None, id_: Optional[str] = None) -> Group:
         """Iterate over all markets."""
         if id_ is not None:
-            response = requests.get(url=BASE_URI + "/group/by-id/" + id_)
+            response = requests.get(url=f"{BASE_URI}/group/by-id/{id_}")
         elif slug is not None:
-            response = requests.get(url=BASE_URI + "/group/" + slug)
+            response = requests.get(url=f"{BASE_URI}/group/{slug}")
         else:
             raise ValueError("Requires one or more of (slug, id_)")
         return Group.from_dict(response.json())
@@ -77,8 +80,15 @@ class ManifoldClient:
     ) -> Iterable[Bet]:
         """Iterate over all bets."""
         response = requests.get(
-            url=BASE_URI + "/bets", params={"limit": limit, "before": before, "username": username, "market": market}
+            url=f"{BASE_URI}/bets",
+            params={
+                "limit": limit,
+                "before": before,
+                "username": username,
+                "market": market,
+            },
         )
+
         return (Bet.from_dict(market) for market in response.json())
 
     def get_market_by_id(self, market_id: str) -> Market:
@@ -87,7 +97,7 @@ class ManifoldClient:
 
     def _get_market_by_id_raw(self, market_id: str) -> Dict[str, Any]:
         """Get a market by id."""
-        response = requests.get(url=BASE_URI + "/market/" + market_id)
+        response = requests.get(url=f"{BASE_URI}/market/{market_id}")
         return cast(Dict[str, Any], response.json())
 
     def get_market_by_slug(self, slug: str) -> Market:
@@ -96,7 +106,7 @@ class ManifoldClient:
 
     def _get_market_by_slug_raw(self, slug: str) -> Dict[str, Any]:
         """Get a market by slug."""
-        response = requests.get(url=BASE_URI + "/slug/" + slug)
+        response = requests.get(url=f"{BASE_URI}/slug/{slug}")
         return cast(Dict[str, Any], response.json())
 
     def get_market_by_url(self, url: str) -> Market:
@@ -106,7 +116,7 @@ class ManifoldClient:
     def _get_market_by_url_raw(self, url: str) -> Dict[str, Any]:
         """Get a market by url."""
         slug = url.split("/")[-1].split("#")[0]
-        response = requests.get(url=BASE_URI + "/slug/" + slug)
+        response = requests.get(url=f"{BASE_URI}/slug/{slug}")
         return cast(Dict[str, Any], response.json())
 
     def get_user(self, handle: str) -> LiteUser:
@@ -114,28 +124,26 @@ class ManifoldClient:
         return LiteUser.from_dict(self._get_user_raw(handle))
 
     def _get_user_raw(self, handle: str) -> Dict[str, Any]:
-        response = requests.get(url=BASE_URI + "/user/" + handle)
+        response = requests.get(url=f"{BASE_URI}/user/{handle}")
         return cast(Dict[str, Any], response.json())
 
     def _auth_headers(self) -> dict[str, str]:
         if self.api_key:
-            return {"Authorization": "Key " + self.api_key}
+            return {"Authorization": f"Key {self.api_key}"}
         else:
             raise RuntimeError("No API key provided")
 
     def cancel_market(self, market: Union[LiteMarket, str]) -> requests.Response:
         """Cancel a market, resolving it N/A."""
-        if isinstance(market, LiteMarket):
-            marketId = market.id
-        else:
-            marketId = market
+        marketId = market.id if isinstance(market, LiteMarket) else market
         response = requests.post(
-            url=BASE_URI + "/market/" + marketId + "/resolve",
+            url=f"{BASE_URI}/market/{marketId}/resolve",
             json={
                 "outcome": "CANCEL",
             },
             headers=self._auth_headers(),
         )
+
         response.raise_for_status()
         return response
 
@@ -144,18 +152,13 @@ class ManifoldClient:
 
         Returns the ID of the created bet.
         """
-        json = {
-            "amount": int(amount),
-            "contractId": contractId,
-            "outcome": outcome,
-        }
+        json = {"amount": amount, "contractId": contractId, "outcome": outcome}
         if limitProb is not None:
             json['limitProb'] = limitProb
         response = requests.post(
-            url=BASE_URI + "/bet",
-            json=json,
-            headers=self._auth_headers(),
+            url=f"{BASE_URI}/bet", json=json, headers=self._auth_headers()
         )
+
         response.raise_for_status()
         return cast(str, response.json()["betId"])
 
@@ -247,6 +250,8 @@ class ManifoldClient:
             data["initialProb"] = initialProb
         elif outcomeType == "FREE_RESPONSE":
             pass
+        elif outcomeType == "MULTIPLE_CHOICE":
+            data["answers"] = answers
         elif outcomeType == "PSEUDO_NUMERIC":
             data["min"] = minValue
             data["max"] = maxValue
@@ -254,18 +259,15 @@ class ManifoldClient:
             if initialValue is None:
                 raise ValueError("Needs initial value")
             data["initialValue"] = initialValue
-        elif outcomeType == "MULTIPLE_CHOICE":
-            data["answers"] = answers
         else:
             raise Exception(
                 "Invalid outcome type. Outcome should be one of: BINARY, FREE_RESPONSE, PSEUDO_NUMERIC, MULTIPLE_CHOICE"
             )
 
         response = requests.post(
-            url=BASE_URI + "/market",
-            json=data,
-            headers=self._auth_headers(),
+            url=f"{BASE_URI}/market", json=data, headers=self._auth_headers()
         )
+
         if response.status_code in range(400, 500):
             response.raise_for_status()
         elif response.status_code >= 500:
@@ -298,10 +300,11 @@ class ManifoldClient:
             json = {"outcome": "MKT", "probabilityInt": probabilityInt}
 
         response = requests.post(
-            url=BASE_URI + "/market/" + market.id + "/resolve",
+            url=f"{BASE_URI}/market/{market.id}/resolve",
             json=json,
             headers=self._auth_headers(),
         )
+
         response.raise_for_status()
         return response
 
@@ -313,10 +316,11 @@ class ManifoldClient:
         prob = 100 * number_to_prob_cpmm1(resolutionValue, market.min, market.max, bool(market.isLogScale))
         json = {"outcome": "MKT", "value": resolutionValue, "probabilityInt": prob}
         response = requests.post(
-            url=BASE_URI + "/market/" + market.id + "/resolve",
+            url=f"{BASE_URI}/market/{market.id}/resolve",
             json=json,
             headers=self._auth_headers(),
         )
+
         response.raise_for_status()
         return response
 
@@ -333,10 +337,11 @@ class ManifoldClient:
                 ]
             }
         response = requests.post(
-            url=BASE_URI + "/market/" + market.id + "/resolve",
+            url=f"{BASE_URI}/market/{market.id}/resolve",
             json=json,
             headers=self._auth_headers(),
         )
+
         response.raise_for_status()
         return response
 
