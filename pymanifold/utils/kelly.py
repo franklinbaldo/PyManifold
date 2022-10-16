@@ -58,8 +58,7 @@ def shares_bought(
         shares_without_fees = y
         post_bet_probability = p * n / (p * n + (1 - p) * y2)
         fee = 0 * (1 - post_bet_probability) * bet + 0.1
-        shares_after_fees = shares_without_fees - fee
-        return shares_after_fees
+        return shares_without_fees - fee
 
     elif outcome == "NO":
         n2 = (k / y**p)**(1 / (1 - p))
@@ -67,8 +66,7 @@ def shares_bought(
         shares_without_fees = n
         post_bet_probability = p * n2 / (p * n2 + (1 - p) * y)
         fee = 0 * post_bet_probability * bet + 0.1
-        shares_after_fees = shares_without_fees - fee
-        return shares_after_fees
+        return shares_without_fees - fee
 
     else:
         raise ValueError("Please give a valid outcome")
