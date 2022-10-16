@@ -13,13 +13,12 @@ client = mf.ManifoldClient(api_key)
 #%%
 probabilities = {
     "https://manifold.markets/FranklinBaldo/will-lula-da-silva-win-the-2022-bra": 0.75,
-    "https://manifold.markets/FranklinBaldo/lula-vai-ser-eleito-presidente-do-b":0.75,
+    "https://manifold.markets/FranklinBaldo/lula-vai-ser-eleito-presidente-do-b": 0.75,
     "https://manifold.markets/FranklinBaldo/this-market-resolves-yes-except-if": 0.95,
     "https://manifold.markets/ZhaoNan/will-lula-da-silva-win-the-2022-pre": 0.75,
     "https://manifold.markets/ManifoldMarkets/will-jair-bolsonaro-be-reelected-pr": 0.25,
-    'https://manifold.markets/FranklinBaldo/this-market-resolves-yes-if-it-hits': 0.5,
+    "https://manifold.markets/FranklinBaldo/this-market-resolves-yes-if-it-hits": 0.5,
 }
-
 
 
 def arbitraging(m1_url, m2_url):
@@ -39,6 +38,7 @@ def arbitraging(m1_url, m2_url):
 
 def main():
     from pymanifold.credentials import get_credentials
+
     username, api_key = get_credentials()
     while True:
         for market_url in probabilities:
@@ -58,7 +58,7 @@ def main():
         time.sleep(secs)
 
 
-if __name__ =="__main__":
+if __name__ == "__main__":
     main()
 
     # %%

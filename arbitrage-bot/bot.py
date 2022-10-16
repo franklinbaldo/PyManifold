@@ -11,8 +11,9 @@ from collections import namedtuple
 import random
 
 
-RUN_ONCE = os.environ.get('RUN_ONCE',default=True)
-SLEEP_TIME = os.environ.get('SLEEP_TIME',default=360)
+RUN_ONCE = os.environ.get("RUN_ONCE", default=True)
+SLEEP_TIME = os.environ.get("SLEEP_TIME", default=360)
+
 
 def shuffled(x):
     x = list(x)
@@ -174,7 +175,10 @@ class ArbitrageGroup(Strategy):
 
             # Make sure markets haven't moved
             if not np.allclose(
-                (y, n), get_shares([bot.client.get_market_by_slug(slug) for slug in self.slugs])
+                (y, n),
+                get_shares(
+                    [bot.client.get_market_by_slug(slug) for slug in self.slugs]
+                ),
             ):
                 print("Markets have moved!, Skipping group.")
                 return

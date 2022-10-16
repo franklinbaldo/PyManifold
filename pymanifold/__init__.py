@@ -3,5 +3,6 @@
 from .lib import ManifoldClient
 from .types import Bet, Comment, LiteMarket, Market
 from .credentials import get_credentials
+
 __version__ = "0.2.0"
 __all__ = ("Bet", "Comment", "LiteMarket", "ManifoldClient", "Market")

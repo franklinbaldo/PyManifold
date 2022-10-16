@@ -147,14 +147,20 @@ class ManifoldClient:
         response.raise_for_status()
         return response
 
-    def create_bet(self, contractId: str, amount: int, outcome: str, limitProb: Optional[float] = None) -> str:
+    def create_bet(
+        self,
+        contractId: str,
+        amount: int,
+        outcome: str,
+        limitProb: Optional[float] = None,
+    ) -> str:
         """Place a bet.
 
         Returns the ID of the created bet.
         """
         json = {"amount": amount, "contractId": contractId, "outcome": outcome}
         if limitProb is not None:
-            json['limitProb'] = limitProb
+            json["limitProb"] = limitProb
         response = requests.post(
             url=f"{BASE_URI}/bet", json=json, headers=self._auth_headers()
         )
@@ -272,11 +278,17 @@ class ManifoldClient:
             response.raise_for_status()
         elif response.status_code >= 500:
             for mkt in self.list_markets():
-                if (question, outcomeType, closeTime) == (mkt.question, mkt.outcomeType, mkt.closeTime):
+                if (question, outcomeType, closeTime) == (
+                    mkt.question,
+                    mkt.outcomeType,
+                    mkt.closeTime,
+                ):
                     return mkt
         return LiteMarket.from_dict(response.json())
 
-    def resolve_market(self, market: Union[LiteMarket, str], *args: Any, **kwargs: Any) -> requests.Response:
+    def resolve_market(
+        self, market: Union[LiteMarket, str], *args: Any, **kwargs: Any
+    ) -> requests.Response:
         """Resolve a market, with different inputs depending on its type."""
         if not isinstance(market, LiteMarket):
             market = self.get_market_by_id(market)
@@ -291,7 +303,9 @@ class ManifoldClient:
         else:  # pragma: no cover
             raise NotImplementedError()
 
-    def _resolve_binary_market(self, market: LiteMarket, probabilityInt: float) -> requests.Response:
+    def _resolve_binary_market(
+        self, market: LiteMarket, probabilityInt: float
+    ) -> requests.Response:
         if probabilityInt == 100 or probabilityInt is True:
             json: Dict[str, Union[float, str]] = {"outcome": "YES"}
         elif probabilityInt == 0 or probabilityInt is False:
@@ -313,7 +327,9 @@ class ManifoldClient:
     ) -> requests.Response:
         assert market.min is not None
         assert market.max is not None
-        prob = 100 * number_to_prob_cpmm1(resolutionValue, market.min, market.max, bool(market.isLogScale))
+        prob = 100 * number_to_prob_cpmm1(
+            resolutionValue, market.min, market.max, bool(market.isLogScale)
+        )
         json = {"outcome": "MKT", "value": resolutionValue, "probabilityInt": prob}
         response = requests.post(
             url=f"{BASE_URI}/market/{market.id}/resolve",
@@ -324,7 +340,9 @@ class ManifoldClient:
         response.raise_for_status()
         return response
 
-    def _resolve_free_response_market(self, market: LiteMarket, weights: Dict[int, float]) -> requests.Response:
+    def _resolve_free_response_market(
+        self, market: LiteMarket, weights: Dict[int, float]
+    ) -> requests.Response:
         if len(weights) == 1:
             json: Dict[str, Any] = {"outcome": next(iter(weights))}
         else:
@@ -334,7 +352,7 @@ class ManifoldClient:
                 "resolutions": [
                     {"answer": index, "pct": 100 * weight / total}
                     for index, weight in weights.items()
-                ]
+                ],
             }
         response = requests.post(
             url=f"{BASE_URI}/market/{market.id}/resolve",
@@ -347,5 +365,7 @@ class ManifoldClient:
 
     _resolve_multiple_choice_market = _resolve_free_response_market
 
-    def _resolve_numeric_market(self, market: LiteMarket, number: float) -> requests.Response:
+    def _resolve_numeric_market(
+        self, market: LiteMarket, number: float
+    ) -> requests.Response:
         raise NotImplementedError("TODO: I suspect the relevant docs are out of date")

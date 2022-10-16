@@ -25,9 +25,9 @@ manifold_vcr = VCR(
 
 
 get_bet_params: list[dict[str, Any]] = [
-    {'username': 'LivInTheLookingGlass'},
-    {'market': 'will-bitcoins-price-fall-below-25k'},
-    {}
+    {"username": "LivInTheLookingGlass"},
+    {"market": "will-bitcoins-price-fall-below-25k"},
+    {},
 ]
 
 
@@ -88,8 +88,8 @@ def test_list_bets() -> None:
     limit = 45
     kwargs: dict[str, Any]
     for kwargs in get_bet_params:
-        key = '-'.join(kwargs) or 'none'
-        with manifold_vcr.use_cassette(f'test_list_bet/{key}.yaml'):
+        key = "-".join(kwargs) or "none"
+        with manifold_vcr.use_cassette(f"test_list_bet/{key}.yaml"):
             bets = client.list_bets(limit=limit, **kwargs)
 
             for idx, b in enumerate(bets):
@@ -102,8 +102,8 @@ def test_get_bets() -> None:
     client = ManifoldClient()
     limit = 45
     for kwargs in get_bet_params:
-        key = '-'.join(kwargs) or 'none'
-        with manifold_vcr.use_cassette(f'test_get_bet/{key}.yaml'):
+        key = "-".join(kwargs) or "none"
+        with manifold_vcr.use_cassette(f"test_get_bet/{key}.yaml"):
             bets = client.get_bets(limit=limit, **kwargs)
 
             for idx, b in enumerate(bets):
@@ -200,7 +200,7 @@ def test_create_market_multiple_choice() -> None:
         description="Going to resolves as N/A",
         tags=["fun"],
         closeTime=5102444800000,
-        answers=["sounds good", "alright", "I don't care"]
+        answers=["sounds good", "alright", "I don't care"],
     )
     validate_lite_market(market)
 
@@ -224,31 +224,31 @@ def test_create_market_numeric() -> None:
 @manifold_vcr.use_cassette()  # type: ignore
 def test_resolve_market_binary() -> None:
     client = ManifoldClient(api_key=API_KEY)
-    client.resolve_market('l6jsJPhOWSztXtzqhpU7', 100)
+    client.resolve_market("l6jsJPhOWSztXtzqhpU7", 100)
 
 
 @manifold_vcr.use_cassette()  # type: ignore
 def test_resolve_market_free_resonse() -> None:
     client = ManifoldClient(api_key=API_KEY)
-    client.resolve_market('qjwjSMWj1s8Hr21hVbPC', {1: 50, 3: 50})
+    client.resolve_market("qjwjSMWj1s8Hr21hVbPC", {1: 50, 3: 50})
 
 
 @manifold_vcr.use_cassette()  # type: ignore
 def test_resolve_market_multiple_choice() -> None:
     client = ManifoldClient(api_key=API_KEY)
-    client.resolve_market('TEW8dlA3pxk3GalxeQkI', {0: 50, 2: 50})
+    client.resolve_market("TEW8dlA3pxk3GalxeQkI", {0: 50, 2: 50})
 
 
 @manifold_vcr.use_cassette()  # type: ignore
 def test_resolve_market_pseudo_numeric() -> None:
     client = ManifoldClient(api_key=API_KEY)
-    client.resolve_market('MIVgHSvQ1s9MRGpm9QUb', 2045)
+    client.resolve_market("MIVgHSvQ1s9MRGpm9QUb", 2045)
 
 
 @manifold_vcr.use_cassette()  # type: ignore
 def test_cancel_market() -> None:
     client = ManifoldClient(api_key=API_KEY)
-    client.cancel_market('H8Dc6yCj4TkvJfoOitYr')
+    client.cancel_market("H8Dc6yCj4TkvJfoOitYr")
 
 
 def validate_lite_market(market: LiteMarket) -> None:
@@ -256,13 +256,34 @@ def validate_lite_market(market: LiteMarket) -> None:
     assert market.creatorUsername
     assert market.question
     # assert market.description
-    assert market.outcomeType in ["BINARY", "FREE_RESPONSE", "NUMERIC", "PSEUDO_NUMERIC", "NUMERIC", "MULTIPLE_CHOICE"]
+    assert market.outcomeType in [
+        "BINARY",
+        "FREE_RESPONSE",
+        "NUMERIC",
+        "PSEUDO_NUMERIC",
+        "NUMERIC",
+        "MULTIPLE_CHOICE",
+    ]
     assert market.pool is None or isinstance(market.pool, (int, float, Mapping))
     assert all(
-        hasattr(market, attr) for attr in [
-            'description', 'creatorAvatarUrl', 'tags', 'volume7Days', 'volume24Hours', 'isResolved', 'lastUpdatedTime',
-            'probability', 'resolutionTime', 'resolution', 'resolutionProbability', 'p', 'totalLiquidity', 'min',
-            'max', 'isLogScale'
+        hasattr(market, attr)
+        for attr in [
+            "description",
+            "creatorAvatarUrl",
+            "tags",
+            "volume7Days",
+            "volume24Hours",
+            "isResolved",
+            "lastUpdatedTime",
+            "probability",
+            "resolutionTime",
+            "resolution",
+            "resolutionProbability",
+            "p",
+            "totalLiquidity",
+            "min",
+            "max",
+            "isLogScale",
         ]
     )
 
@@ -289,7 +310,7 @@ def validate_bet(bet: Bet) -> None:
     assert bet.contractId
     assert bet.createdTime
     assert bet.id
-    assert hasattr(bet, 'amount')
+    assert hasattr(bet, "amount")
 
 
 def validate_lite_user(user: LiteUser) -> None:
@@ -299,9 +320,18 @@ def validate_lite_user(user: LiteUser) -> None:
     assert user.username
     assert user.url
     assert all(
-        hasattr(user, attr) for attr in [
-            'avatarUrl', 'bio', 'bannerUrl', 'website', 'twitterHandle', 'discordHandle', 'balance', 'totalDeposits',
-            'totalPnLCached', 'creatorVolumeCached'
+        hasattr(user, attr)
+        for attr in [
+            "avatarUrl",
+            "bio",
+            "bannerUrl",
+            "website",
+            "twitterHandle",
+            "discordHandle",
+            "balance",
+            "totalDeposits",
+            "totalPnLCached",
+            "creatorVolumeCached",
         ]
     )
 
