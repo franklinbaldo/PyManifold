@@ -7,15 +7,14 @@ authors = ["Benjamin <ben@congdon.dev>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 requests = "^2.28.0"
-vcrpy = "^4.1.1"
 numpy = "^1.23.1"
-keyring = "^23.9.3"
 scipy = "^1.9.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 ipykernel = "^6.16.0"
 black = {version = "^22.10.0", allow-prereleases = true}
+vcrpy = "^4.2.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
