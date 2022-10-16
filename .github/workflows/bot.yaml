@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: arbitrage
+    name: run bot
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,4 +19,4 @@ jobs:
       - name: Install 
         run: pip3 install .
       - name: Install dependencies
-        run: python run arbitrage-bot/bot.py
+        run: python3 arbitrage-bot/bot.py
