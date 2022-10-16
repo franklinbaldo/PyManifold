@@ -1,6 +1,6 @@
 import os
 
-import keyring
+
 
 # %%
 MANIFOLD_USERNAME = os.environ.get("MANIFOLD_USERNAME")
