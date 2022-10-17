@@ -20,9 +20,9 @@ def get_credentials(dotenv_path=None):
     api_key = os.environ.get("MANIFOLD_APIKEY")
     if not all([username, api_key]):
         try:
-            username, api_key = get_credentials(dotenv_path=Path.cwd()/'.env')
+            username, api_key = get_credentials(dotenv_path=Path.cwd() / ".env")
         except Exception as e:
-            print('error loading dotenv')
+            print("error loading dotenv")
     assert all(
         [username, api_key]
     ), "you should set variables MANIFOLD_USERNAME and MANIFOLD_APIKEY on your enviroment"
