@@ -154,7 +154,7 @@ class ArbitrageGroup(Strategy):
             shares = n2 - n - y2 + y
             print("Posterior probs:", prob_from_cartesian(p, y2, n2))
             print("Profits:", profit)
-            if np.min(profit) <= 0.5 * len(markets):
+            if np.min(profit) <= 0.01 * len(markets):
                 print("Profit negligible, skipping")
                 return
 
