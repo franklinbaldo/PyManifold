@@ -15,6 +15,7 @@ import scipy as sp
 RUN_ONCE = os.environ.get("RUN_ONCE", default=True)
 SLEEP_TIME = os.environ.get("SLEEP_TIME", default=360)
 CONFIRM_BETS = False
+MAX_BACKOFF = 4
 
 def shuffled(x):
     x = list(x)
