@@ -2,16 +2,21 @@ from __future__ import annotations
 
 from os import getenv
 from pathlib import Path
-from typing import TYPE_CHECKING, Mapping
+from typing import Mapping
+from typing import TYPE_CHECKING
 
-from pymanifold import ManifoldClient, __version__
-from pymanifold.types import Group, Market
+from pymanifold import __version__
+from pymanifold import ManifoldClient
+from pymanifold.types import Group
+from pymanifold.types import Market
 from vcr import VCR
 
 if TYPE_CHECKING:  # pragma: no cover
     from typing import Any
 
-    from pymanifold.types import Bet, LiteMarket, LiteUser
+    from pymanifold.types import Bet
+    from pymanifold.types import LiteMarket
+    from pymanifold.types import LiteUser
 
 API_KEY = getenv("MANIFOLD_API_KEY", "fake_api_key")
 LOCAL_FOLDER = str(Path(__file__).parent)

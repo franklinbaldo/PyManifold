@@ -1,7 +1,5 @@
 import os
 
-
-
 # %%
 MANIFOLD_USERNAME = os.environ.get("MANIFOLD_USERNAME")
 MANIFOLD_APIKEY = os.environ.get("MANIFOLD_APIKEY")

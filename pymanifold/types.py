@@ -2,23 +2,22 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
+from dataclasses import field
 from inspect import signature
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import (
-        Any,
-        Dict,
-        Iterable,
-        List,
-        Literal,
-        Mapping,
-        Optional,
-        Type,
-        TypeVar,
-        Union,
-    )
+    from typing import Any
+    from typing import Dict
+    from typing import Iterable
+    from typing import List
+    from typing import Literal
+    from typing import Mapping
+    from typing import Optional
+    from typing import Type
+    from typing import TypeVar
+    from typing import Union
 
     from .lib import ManifoldClient
 

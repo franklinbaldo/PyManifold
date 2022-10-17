@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Dict, Literal, cast
+from typing import cast
+from typing import Dict
+from typing import Literal
+from typing import TYPE_CHECKING
 
 from numpy import argmax
 from numpy import log as ln

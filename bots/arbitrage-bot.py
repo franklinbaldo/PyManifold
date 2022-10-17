@@ -1,15 +1,16 @@
-import pymanifold as mf
+from abc import abstractmethod
 import os
-from abc import ABC, abstractmethod
-from pymanifold.types import LiteUser, Market
-from pymanifold.credentials import get_credentials
-import numpy as np
-import typing as t
-import scipy as sp
-from time import sleep, time
-from collections import namedtuple
 import random
+from time import sleep
+from time import time
+import typing as t
 
+import numpy as np
+import pymanifold as mf
+from pymanifold.credentials import get_credentials
+from pymanifold.types import LiteUser
+from pymanifold.types import Market
+import scipy as sp
 
 RUN_ONCE = os.environ.get("RUN_ONCE", default=True)
 SLEEP_TIME = os.environ.get("SLEEP_TIME", default=360)

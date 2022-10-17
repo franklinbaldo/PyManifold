@@ -2,15 +2,26 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Dict, cast
+from typing import Any
+from typing import cast
+from typing import Dict
+from typing import TYPE_CHECKING
 
 import requests
 
-from .types import Bet, Group, LiteMarket, LiteUser, Market
+from .types import Bet
+from .types import Group
+from .types import LiteMarket
+from .types import LiteUser
+from .types import Market
 from .utils.math import number_to_prob_cpmm1
 
 if TYPE_CHECKING:  # pragma: no cover
-    from typing import Iterable, List, Optional, Sequence, Union
+    from typing import Iterable
+    from typing import List
+    from typing import Optional
+    from typing import Sequence
+    from typing import Union
 
 BASE_URI = "https://manifold.markets/api/v0"
 

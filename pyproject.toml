@@ -15,6 +15,8 @@ pytest = "^5.2"
 ipykernel = "^6.16.0"
 black = {version = "^22.10.0", allow-prereleases = true}
 vcrpy = "^4.2.1"
+isort = "^5.10.1"
+zimports = "^0.6.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

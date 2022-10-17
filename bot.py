@@ -1,9 +1,7 @@
 #%%
-import pymanifold as mf
-
-import getpass
-
 import time
+
+import pymanifold as mf
 
 # %%
 username, api_key = mf.credentials.get_credentials()
