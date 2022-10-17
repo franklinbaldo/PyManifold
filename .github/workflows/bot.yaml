@@ -22,4 +22,4 @@ jobs:
         env:
           MANIFOLD_USERNAME: ${{ secrets.MANIFOLD_USERNAME }}
           MANIFOLD_APIKEY: ${{ secrets.MANIFOLD_APIKEY }}
-        run: python3 arbitrage-bot/bot.py
+        run: python3 bots/arbitrage-bot.py
