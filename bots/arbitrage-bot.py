@@ -14,7 +14,7 @@ import scipy as sp
 
 RUN_ONCE = os.environ.get("RUN_ONCE", default=True)
 SLEEP_TIME = os.environ.get("SLEEP_TIME", default=360)
-
+CONFIRM_BETS = False
 
 def shuffled(x):
     x = list(x)
@@ -186,12 +186,12 @@ class ArbitrageGroup(Strategy):
 
             for i, m in shuffled(enumerate(markets)):
                 if shares[i] > 0.5:
-                    amount = n2[i] - n[i]
+                    amount = int(n2[i] - n[i])
                     outcome = "YES"
                     bot.client.create_bet(m.id, amount, outcome)
 
                 elif shares[i] < -0.5:
-                    amount = y2[i] - y[i]
+                    amount = int(y2[i] - y[i])
                     outcome = "NO"
                     bot.client.create_bet(m.id, amount, outcome)
 
@@ -199,7 +199,7 @@ class ArbitrageGroup(Strategy):
 # from private import API_KEY, USER_ID, ALL_GROUPS
 
 if __name__ == "__main__":
-    from secret_config import *
+    from secret_config import GROUPS
 
     # from public_config import *
     strategies = [ArbitrageGroup(name, d) for name, d in GROUPS.items()]
