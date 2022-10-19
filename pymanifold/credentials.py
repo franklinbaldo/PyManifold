@@ -3,8 +3,6 @@ import typing as t
 from dotenv import load_dotenv
 from pathlib import Path
 
-# %%
-
 
 def set_credentials(username, api_key):
     assert all([username, api_key]), "you should insert a valid username and api_key"
