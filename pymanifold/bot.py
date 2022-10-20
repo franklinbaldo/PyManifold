@@ -35,11 +35,12 @@ class Bot:
 
     def run(self, run_once=RUN_ONCE, sleep_time=SLEEP_TIME, min_balance=10):
         for strategy in self.strategies:
-            print(f"Running Strategy: {strategy.name}")
             balance= self.my_balance()
+            print(strategy.name)
+            print(f"Balance: {balance}")
             if balance < min_balance:
+                print(f'you need at least M${min_balance} to run this strategy, skipping')
                 break
-            print(f"Balance: {self.my_balance()}")
             strategy.run(self)
         if run_once:
             return
