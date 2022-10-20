@@ -3,7 +3,7 @@ import typing as t
 from pathlib import Path
 from dotenv import dotenv_values
 from .lib import ManifoldClient
-
+from abc import abstractmethod
 # %%
 
 

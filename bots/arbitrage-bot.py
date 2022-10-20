@@ -7,10 +7,11 @@ import typing as t
 
 import numpy as np
 import pymanifold as mf
-from pymanifold.credentials import get_credentials
+
 from pymanifold.types import LiteUser
 from pymanifold.types import Market
 from pymanifold.bot import Strategy
+from pymanifold.lib import ManifoldClient
 import scipy as sp
 from dotenv import load_dotenv
 
@@ -65,10 +66,14 @@ class Bot:
     client: mf.ManifoldClient
     username: LiteUser = None
 
-    def __init__(self, username, api_key):
-        self.api_key = api_key
-        self.username = username
-        self.client = mf.ManifoldClient(self.api_key)
+
+    def __init__(self, dotenv_path=None, username=None, api_key=None):
+        env = dotenv_values(dotenv_path=dotenv_path) if dotenv_path else os.environ
+        self.username = username or env.get("MANIFOLD_USERNAME")
+        api_key = api_key or env.get("MANIFOLD_APIKEY")
+        if not all([username, api_key]):
+            print("you should set bot api_key and username before using it")
+        self.client = ManifoldClient(api_key)
 
     def my_balance(self):
         return self.client.get_user(self.username).balance
@@ -187,21 +192,22 @@ class ArbitrageGroup(Strategy):
                 if shares[i] > 0.5:
                     amount = int(n2[i] - n[i])
                     outcome = "YES"
-                    bot.client.create_bet(m.id, amount, outcome)
+                    if bot.my_balance()>amount:
+                        bot.client.create_bet(m.id, amount, outcome)
 
                 elif shares[i] < -0.5:
                     amount = int(y2[i] - y[i])
                     outcome = "NO"
-                    bot.client.create_bet(m.id, amount, outcome)
+                    if bot.my_balance()>amount:
+                        bot.client.create_bet(m.id, amount, outcome)
 
 
 # from private import API_KEY, USER_ID, ALL_GROUPS
 
 if __name__ == "__main__":
     from secret_config import GROUPS
-
+    username = os.environ.get('MANIFOLD_USERNAME')
     # from public_config import *
     strategies = [ArbitrageGroup(name, d) for name, d in GROUPS.items()]
-    username, api_key = get_credentials()
-    bot = Bot(username, api_key)
+    bot = Bot(username=username)
     bot.run(strategies)
