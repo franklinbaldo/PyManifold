@@ -33,9 +33,12 @@ class Bot:
     def my_balance(self):
         return self.client.get_user(self.username).balance
 
-    def run(self, run_once=RUN_ONCE, sleep_time=SLEEP_TIME):
+    def run(self, run_once=RUN_ONCE, sleep_time=SLEEP_TIME, min_balance=10):
         for strategy in self.strategies:
             print(f"Running Strategy: {strategy.name}")
+            balance= self.my_balance()
+            if balance < min_balance:
+                break
             print(f"Balance: {self.my_balance()}")
             strategy.run(self)
         if run_once:
