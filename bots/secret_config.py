@@ -13,20 +13,21 @@ GROUPS = {
         #                                                    |  Required
         #                                                    |  |
         "will-lula-da-silva-win-the-2022-bra": [0, 1],
-        #"will-lula-da-silva-win-the-2022-pre": [0, 1],
+        # "will-lula-da-silva-win-the-2022-pre": [0, 1],
         "lula-vai-ser-eleito-presidente-do-b": [0, 1],
-        #"will-jair-bolsonaro-be-reelected-pr": [1, 0],
+        # "will-jair-bolsonaro-be-reelected-pr": [1, 0],
     },
-"Brazilian Elections2": {
+    "Brazilian Elections2": {
         #                                                    Not required
         #                                                    |  Required
         #                                                    |  |
         "will-lula-da-silva-win-the-2022-bra": [0, 1],
         "will-lula-da-silva-win-the-2022-pre": [0, 1],
-        #"lula-vai-ser-eleito-presidente-do-b": [0, 1],
-        #"will-jair-bolsonaro-be-reelected-pr": [1, 0],
+        # "lula-vai-ser-eleito-presidente-do-b": [0, 1],
+        # "will-jair-bolsonaro-be-reelected-pr": [1, 0],
     },
-"Inverse Br election":{"lula-vai-ser-eleito-presidente-do-b": [0, 1],
+    "Inverse Br election": {
+        "lula-vai-ser-eleito-presidente-do-b": [0, 1],
         "will-jair-bolsonaro-be-reelected-pr": [1, 0],
     },
 }

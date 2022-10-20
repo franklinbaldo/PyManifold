@@ -20,6 +20,7 @@ SLEEP_TIME = os.environ.get("SLEEP_TIME", default=360)
 CONFIRM_BETS = False
 MAX_BACKOFF = 4
 
+
 def shuffled(x):
     x = list(x)
     random.shuffle(x)
@@ -58,9 +59,6 @@ def get_shares(markets: t.List[Market]):
     return np.array([m.pool["YES"] for m in markets]), np.array(
         [m.pool["NO"] for m in markets]
     )
-
-
-
 
 
 class Bot:
