@@ -10,8 +10,11 @@ import pymanifold as mf
 from pymanifold.credentials import get_credentials
 from pymanifold.types import LiteUser
 from pymanifold.types import Market
+from pymanifold.bot import Strategy
 import scipy as sp
+from dotenv import load_dotenv
 
+load_dotenv()
 RUN_ONCE = os.environ.get("RUN_ONCE", default=True)
 SLEEP_TIME = os.environ.get("SLEEP_TIME", default=360)
 
@@ -56,10 +59,7 @@ def get_shares(markets: t.List[Market]):
     )
 
 
-class Strategy:
-    @abstractmethod
-    def run(bot):
-        pass
+
 
 
 class Bot:
