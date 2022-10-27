@@ -1,8 +1,7 @@
 from abc import abstractmethod
 import os
 import random
-from time import sleep
-from time import time
+import time
 import typing as t
 
 import numpy as np
@@ -21,6 +20,8 @@ SLEEP_TIME = os.environ.get("SLEEP_TIME", default=360)
 CONFIRM_BETS = False
 MAX_BACKOFF = 4
 
+
+    
 
 def shuffled(x):
     x = list(x)
@@ -75,32 +76,28 @@ class Bot:
             print("you should set bot api_key and username before using it")
         self.client = ManifoldClient(api_key)
 
-    def my_balance(self):
+    def get_balance(self):
         return self.client.get_user(self.username).balance
 
     def run(
         self, strategies: t.List[Strategy], run_once=RUN_ONCE, sleep_time=SLEEP_TIME
     ):
-        while True:
-            for strategy in strategies:
-                print(f"Balance: {self.my_balance()}")
-                strategy.run(self)
-            if run_once:
-                break
-            sleep(sleep_time)
+        for strategy in strategies:
+            print(f"Balance: {self.get_balance()}")
+            strategy.run(self)
+        if run_once is False:
+            time.sleep(sleep_time)
+            self.run(strategies, run_once, sleep_time)
+        
 
 
 class Backoff:
-    def __init__(self):
-        self.reset()
+    t = 1
 
-    def reset(self):
+    def reset(self) -> None:
         self.t = 1
-
-    def should_fire(self):
-        if random.randrange(self.t) > 0:
-            return False
-        self.t = min(self.t * 2, MAX_BACKOFF)
+        
+    def should_fire(self) -> bool:
         return True
 
 
@@ -192,13 +189,13 @@ class ArbitrageGroup(Strategy):
                 if shares[i] > 0.5:
                     amount = int(n2[i] - n[i])
                     outcome = "YES"
-                    if bot.my_balance()>amount:
+                    if bot.get_balance()>amount:
                         bot.client.create_bet(m.id, amount, outcome)
 
                 elif shares[i] < -0.5:
                     amount = int(y2[i] - y[i])
                     outcome = "NO"
-                    if bot.my_balance()>amount:
+                    if bot.get_balance()>amount:
                         bot.client.create_bet(m.id, amount, outcome)
 
 
