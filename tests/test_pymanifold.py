@@ -16,7 +16,7 @@ API_KEY = getenv("MANIFOLD_API_KEY", "fake_api_key")
 LOCAL_FOLDER = str(Path(__file__).parent)
 
 manifold_vcr = VCR(
-    cassette_library_dir=LOCAL_FOLDER + "/fixtures/cassettes",
+    cassette_library_dir=f"{LOCAL_FOLDER}/fixtures/cassettes",
     record_mode="once",
     match_on=["uri", "method"],
     filter_headers=["authorization"],
@@ -178,7 +178,7 @@ def test_get_market_by_url() -> None:
     client = ManifoldClient()
 
     slug = "will-bitcoins-price-fall-below-25k"
-    url = "https://manifold.markets/bcongdon/" + slug
+    url = f"https://manifold.markets/bcongdon/{slug}"
     market = client.get_market_by_url(url)
     assert market.slug == slug
     assert market.id == "rIR6mWqaO9xKLifr6cLL"
@@ -194,7 +194,7 @@ def test_get_market_by_slug() -> None:
     market = client.get_market_by_slug("will-bitcoins-price-fall-below-25k")
     assert market.slug == slug
     assert market.id == "rIR6mWqaO9xKLifr6cLL"
-    assert market.url == "https://manifold.markets/bcongdon/" + slug
+    assert market.url == f"https://manifold.markets/bcongdon/{slug}"
     validate_market(market)
 
 

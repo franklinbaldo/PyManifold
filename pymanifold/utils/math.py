@@ -34,5 +34,4 @@ def prob_to_number_cpmm1(probability: float, start: float, end: float, isLogScal
         ret: float = (end - start + 1)**probability + start - 1
     else:
         ret = start + (end - start) * probability
-    ret = max(start, min(end, ret))
-    return ret
+    return max(start, min(end, ret))

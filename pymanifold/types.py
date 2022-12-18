@@ -156,9 +156,7 @@ class Market(LiteMarket):
         Originally from manifoldpy/api.py, with permission, under the MIT License, under which this project is also
         licensed.
         """
-        if not self.bets:
-            return 0
-        return len({b.userId for b in self.bets})
+        return len({b.userId for b in self.bets}) if self.bets else 0
 
     def probability_history(self) -> tuple[tuple[float, ...], tuple[float, ...]]:
         """Return the probability/value history of this market as a pair of lockstep tuples."""
@@ -244,9 +242,7 @@ class Market(LiteMarket):
                     idx = new_idx
             except IndexError:
                 # this means that we fell off the edge of the probability map, so just return the nearest one
-                if idx <= 0:
-                    return probs[0]
-                return probs[-1]
+                return probs[0] if idx <= 0 else probs[-1]
             if smooth:
                 weight_1 = 1 / abs(timestamp - times[idx - 1])
                 weight_2 = 1 / abs(timestamp - times[idx])
